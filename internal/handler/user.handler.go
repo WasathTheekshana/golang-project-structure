@@ -52,7 +52,7 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusInternalServerError, interfaces.IUserResponse{
+	c.JSON(http.StatusOK, interfaces.IUserResponse{
 		Info: interfaces.IInfoMessage{
 			Status: interfaces.StatusSuccess,
 			Code:   http.StatusOK,

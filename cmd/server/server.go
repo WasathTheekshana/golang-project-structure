@@ -6,11 +6,15 @@ import (
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
+
+	"github.com/WasathTheekshana/golang-project-structure/interfaces"
 )
 
 type GinServer interface {
 	Start(ctx context.Context, httpAddress string) error
 	Shutdown(ctx context.Context) error
+	RegisterGroupRoute(path string, routes []interfaces.IRouteDefinition, middlewares ...gin.HandlerFunc)
+	RegisterRoute(method, path string, handler gin.HandlerFunc)
 }
 
 type GinServerBuilder struct{}
@@ -54,4 +58,44 @@ func (gs *ginServer) Shutdown(ctx context.Context) error {
 
 	log.Infof("Server is shutting down...")
 	return nil
+}
+
+// Method to register a single route
+func (gs *ginServer) RegisterRoute(method, path string, handler gin.HandlerFunc) {
+	switch method {
+	case "GET":
+		gs.engine.GET(path, handler)
+	case "POST":
+		gs.engine.POST(path, handler)
+	case "PUT":
+		gs.engine.PUT(path, handler)
+	case "DELETE":
+		gs.engine.DELETE(path, handler)
+	case "PATCH":
+		gs.engine.PATCH(path, handler)
+	default:
+		log.Errorf("Invalid HTTP method provided")
+	}
+}
+
+// Register group of routes
+func (gs *ginServer) RegisterGroupRoute(path string, routes []interfaces.IRouteDefinition, middlewares ...gin.HandlerFunc) {
+	group := gs.engine.Group("api/v1" + path)
+	group.Use(middlewares...)
+	for _, route := range routes {
+		switch route.Method {
+		case "GET":
+			group.GET(route.Path, route.Handler)
+		case "POST":
+			group.POST(route.Path, route.Handler)
+		case "PUT":
+			group.PUT(route.Path, route.Handler)
+		case "DELETE":
+			group.DELETE(route.Path, route.Handler)
+		case "PATCH":
+			group.PATCH(route.Path, route.Handler)
+		default:
+			log.Errorf("Invalid HTTP method provided")
+		}
+	}
 }

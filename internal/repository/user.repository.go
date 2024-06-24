@@ -22,7 +22,7 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 
 // Function to create a new user
 func (r *userRepository) CreateUserAccount(userRequest *interfaces.IUserRegistrationRequest) (*model.User, error) {
-	user := model.User{
+	user := &model.User{
 		Email:    userRequest.Email,
 		Username: userRequest.Username,
 		FullName: userRequest.FullName,
@@ -33,7 +33,7 @@ func (r *userRepository) CreateUserAccount(userRequest *interfaces.IUserRegistra
 		return nil, err
 	}
 
-	return &user, nil
+	return user, nil
 }
 
 // Method to return user credentials
@@ -44,5 +44,5 @@ func (r *userRepository) FetchUserDetails(userEmail string) (*model.User, error)
 		return nil, err
 	}
 
-	return nil, nil
+	return user, nil
 }

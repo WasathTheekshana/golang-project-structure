@@ -9,6 +9,7 @@ import (
 
 	"github.com/WasathTheekshana/golang-project-structure/cmd/server"
 	"github.com/WasathTheekshana/golang-project-structure/config"
+	"github.com/WasathTheekshana/golang-project-structure/provider"
 )
 
 func Execute() {
@@ -18,11 +19,12 @@ func Execute() {
 	ctx := context.Background()
 
 	config.LoadEnvionment()
-	_, err := config.SetupDatabse()
+	db, err := config.SetupDatabse()
 	if err != nil {
 		log.Fatal("Error setting up the database %v", err)
 	}
 
+	provider.NewProvider(db, server)
 	go func() {
 		if err := server.Start(ctx, os.Getenv(config.AppPort)); err != nil {
 			log.Errorf("Error starting the server %v", err)
