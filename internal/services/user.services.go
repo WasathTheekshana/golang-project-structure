@@ -5,7 +5,10 @@ import (
 	"github.com/WasathTheekshana/golang-project-structure/internal/repository"
 )
 
-type UserService interface{}
+type UserService interface {
+	FetchUserAccount(userEmail string) (*interfaces.IUserData, error)
+	CreateUserAccount(userRequest *interfaces.IUserRegistrationRequest) (*interfaces.IUserData, error)
+}
 
 type userService struct {
 	userRepo repository.UserRepository
@@ -34,6 +37,7 @@ func (s *userService) CreateUserAccount(userRequest *interfaces.IUserRegistratio
 	}, nil
 }
 
+// Fetch user details
 func (s *userService) FetchUserAccount(userEmail string) (*interfaces.IUserData, error) {
 	userData, err := s.userRepo.FetchUserDetails(userEmail)
 	if err != nil {

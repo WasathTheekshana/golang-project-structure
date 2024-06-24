@@ -23,9 +23,9 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 // Function to create a new user
 func (r *userRepository) CreateUserAccount(userRequest *interfaces.IUserRegistrationRequest) (*model.User, error) {
 	user := model.User{
-		Email:    &userRequest.Email,
-		Username: &userRequest.Username,
-		FullName: &userRequest.FullName,
+		Email:    userRequest.Email,
+		Username: userRequest.Username,
+		FullName: userRequest.FullName,
 		UserRole: model.UserRole,
 	}
 

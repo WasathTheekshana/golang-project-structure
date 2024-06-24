@@ -22,3 +22,8 @@ type IUserData struct {
 	UserRole  model.Role `json:"role"`
 	CreatedAt time.Time  `json:"createdAt"`
 }
+
+type IUserResponse struct {
+	Info IInfoMessage `json:"info"`
+	Data IUserData    `json:"data"`
+}
