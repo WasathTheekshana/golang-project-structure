@@ -1,1 +1,1 @@
-# golang-project-structure
+# Golang Project Structure
